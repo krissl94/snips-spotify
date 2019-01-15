@@ -39,10 +39,28 @@ def action_wrapper(hermes, intentMessage, conf):
     Refer to the documentation for further details. 
     """ 
     
+    import sys
     import spotipy
-    spotify = spotipy.Spotify()
-    spotify.pause_playback()
-    
+    token = 'AQDEGnI0JkHBgkcTvJD3sjP_lFhhCBhzwTx_G5ZwP9zG-gNOzQYSMD8_FwmNBRYrU3JkNM4AlRetdLL1Asoa8VDqhz24ZO-IzIz7P8bGMheuKAFrgf9vqwBhyw_NGqAcMBZTUH3hG-Wc3KHgm9ZemimLiaWGdU7fjzfV-fksE3Yy7rTA2ehpoqqdvbWRbzjvrx41js8KUhMzXFsGClXubF3iCWdYdV6M9O8BnHFT1ceiELGJiiZ82DGbgEo',
+    spotify = spotipy.Spotify(token)
+    import spotipy.util as util
+
+    scope = 'user-library-read, user-modify-playback-state'
+
+    if len(conf['secret']) > 1:
+        username = conf['secret']['sp_username']
+    else:
+        hermes.publish_end_session(current_session_id, "Usage: %s username" % (sys.argv[0],))
+        sys.exit()
+
+
+#util.prompt_for_user_token(username, scope, '690df81ba6104b089ffe0e49b469ccfc', 'f82cf0651d11453aad0e546dd75f7c79', '192.168.178.61')
+
+    spotify.pause_playback('')
+    result_sentence = conf['secret']['sp_username'] 
+    current_session_id = intentMessage.session_id
+    hermes.publish_end_session(current_session_id, result_sentence)
+   
 
 
 if __name__ == "__main__":
